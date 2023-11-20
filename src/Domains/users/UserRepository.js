@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 class UserRepository {
   async addUser(registerUser) {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
@@ -12,6 +13,10 @@ class UserRepository {
   }
 
   async getIdByUsername(username) {
+    throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
+
+  async verifyUserId(id) {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }
