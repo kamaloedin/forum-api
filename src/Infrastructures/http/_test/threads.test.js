@@ -16,6 +16,8 @@ describe('/threads endpoint', () => {
 
   describe('when POST /threads', () => {
     it('should response 201 and persisted threads', async () => {
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+
       const requestPayload = {
         title: 'Dicoding',
         body: 'Dicoding is the best!',
