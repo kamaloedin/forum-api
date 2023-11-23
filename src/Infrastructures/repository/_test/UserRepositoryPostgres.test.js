@@ -29,7 +29,9 @@ describe('UserRepositoryPostgres', () => {
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).resolves.not.toThrowError(InvariantError);
+      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).resolves.not.toThrowError(
+        InvariantError,
+      );
     });
   });
 
@@ -66,11 +68,13 @@ describe('UserRepositoryPostgres', () => {
       const registeredUser = await userRepositoryPostgres.addUser(registerUser);
 
       // Assert
-      expect(registeredUser).toStrictEqual(new RegisteredUser({
-        id: 'user-123',
-        username: 'dicoding',
-        fullname: 'Dicoding Indonesia',
-      }));
+      expect(registeredUser).toStrictEqual(
+        new RegisteredUser({
+          id: 'user-123',
+          username: 'dicoding',
+          fullname: 'Dicoding Indonesia',
+        }),
+      );
     });
   });
 
@@ -80,9 +84,7 @@ describe('UserRepositoryPostgres', () => {
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
-      return expect(userRepositoryPostgres.getPasswordByUsername('dicoding'))
-        .rejects
-        .toThrowError(InvariantError);
+      return expect(userRepositoryPostgres.getPasswordByUsername('dicoding')).rejects.toThrowError(InvariantError);
     });
 
     it('should return username password when user is found', async () => {
@@ -105,9 +107,7 @@ describe('UserRepositoryPostgres', () => {
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(userRepositoryPostgres.getIdByUsername('dicoding'))
-        .rejects
-        .toThrowError(InvariantError);
+      await expect(userRepositoryPostgres.getIdByUsername('dicoding')).rejects.toThrowError(InvariantError);
     });
 
     it('should return user id correctly', async () => {
@@ -122,4 +122,18 @@ describe('UserRepositoryPostgres', () => {
       expect(userId).toEqual('user-321');
     });
   });
+
+  // describe('verifyUserId', () => {
+  //   it('should throw AuthenticationError when user is not found', async () => {
+  //     const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+  //     await expect(userRepositoryPostgres.verifyUserId('user-321')).rejects.toThrowError(AuthenticationError);
+  //   });
+
+  //   it('should not throw AuthenticationError when user is found', async () => {
+  //     const fakeIdGenerator = () => '321';
+  //     const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
+  //     await userRepositoryPostgres.addUser();
+  //   });
+  // });
 });
