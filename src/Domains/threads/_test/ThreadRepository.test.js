@@ -6,4 +6,10 @@ describe('ThreadRepository interface', () => {
 
     await expect(threadRepository.addThread({})).rejects.toThrowError('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   });
+
+  it('should throw error when invoke abstract behavior', async () => {
+    const threadRepository = new ThreadRepository();
+
+    await expect(threadRepository.findThreadById('')).rejects.toThrowError('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  });
 });

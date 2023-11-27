@@ -2,12 +2,8 @@
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const ThreadTableTestHelper = {
-  async addThread({
-    id = 'thread-h_W1Plfpj0TY7wyT2PUPX',
-    title = 'Dicoding',
-    body = 'Dicoding is the best!',
-    owner = 'user-123',
-  }) {
+  // eslint-disable-next-line object-curly-newline
+  async addThread({ id = 'thread-321', title = 'Dicoding', body = 'Dicoding is the best!', owner = 'user-123' }) {
     const query = {
       text: 'INSERT INTO threads VALUES($1, $2, $3, $4, $5)',
       values: [id, title, body, 'NOW()', owner],
@@ -26,7 +22,7 @@ const ThreadTableTestHelper = {
   },
 
   async cleanTable() {
-    await pool.query('TRUNCATE TABLE threads');
+    await pool.query('TRUNCATE TABLE threads CASCADE');
   },
 };
 
