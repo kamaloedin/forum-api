@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 const Jwt = require('@hapi/jwt');
 const UsersTableTestHelper = require('./UsersTableTestHelper');
 const pool = require('../src/Infrastructures/database/postgres/pool');
