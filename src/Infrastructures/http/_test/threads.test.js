@@ -1,6 +1,7 @@
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const container = require('../../container');
 const pool = require('../../database/postgres/pool');
 const createServer = require('../createServer');
@@ -124,8 +125,10 @@ describe('/threads endpoint', () => {
     });
 
     it('should response 200 when thread is found', async () => {
-      await UsersTableTestHelper.addUser('user-123');
-      await ThreadTableTestHelper.addThread('thread-321');
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment01' });
+      await CommentsTableTestHelper.addComment({ id: 'comment02' });
       const server = await createServer(container);
       const response = await server.inject({
         method: 'GET',

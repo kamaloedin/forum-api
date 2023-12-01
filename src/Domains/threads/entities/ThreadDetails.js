@@ -2,7 +2,6 @@
 /* eslint-disable object-curly-newline */
 class ThreadDetails {
   constructor(payload) {
-    console.log(payload);
     this._verifyPayload(payload);
     const { id, title, body, date, username, comments } = payload;
 
@@ -27,7 +26,6 @@ class ThreadDetails {
 
   _verifyPayload({ id, title, body, date, username, comments }) {
     if (!id || !title || !body || !date || !username || !comments) {
-      console.log(title);
       throw new Error('THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -35,7 +33,7 @@ class ThreadDetails {
       typeof id !== 'string' ||
       typeof title !== 'string' ||
       typeof body !== 'string' ||
-      typeof date !== 'string' ||
+      typeof date !== 'object' ||
       typeof username !== 'string' ||
       typeof comments !== 'object'
     ) {
