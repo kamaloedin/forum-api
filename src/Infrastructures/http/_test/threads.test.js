@@ -105,9 +105,37 @@ describe('/threads endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'tidak dapat membuat thread baru karena karakter title melebihi batas limit',
-      );
+      expect(responseJson.message).toEqual('tidak dapat membuat thread baru karena karakter title melebihi batas limit');
+    });
+  });
+
+  describe('when GET /threads', () => {
+    it('should response 404 when thread could not be found', async () => {
+      const server = await createServer(container);
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/thread-321',
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('Thread tidak bisa ditemukan');
+    });
+
+    it('should response 200 when thread is found', async () => {
+      await UsersTableTestHelper.addUser('user-123');
+      await ThreadTableTestHelper.addThread('thread-321');
+      const server = await createServer(container);
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/thread-321',
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
     });
   });
 });

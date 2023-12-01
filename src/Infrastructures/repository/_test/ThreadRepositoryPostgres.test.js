@@ -73,4 +73,36 @@ describe('ThreadRepositoryPostgres', () => {
       await expect(threadRepositoryPostgres.findThreadById('thread-321')).resolves.not.toThrowError(NotFoundError);
     });
   });
+
+  describe('getThreadById function', () => {
+    it('should throw NotFoundError when the thread is not found', async () => {
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      await expect(threadRepositoryPostgres.getThreadById('thread-321')).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw NotFoundError when the thread is found', async () => {
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      await expect(threadRepositoryPostgres.getThreadById('thread-321')).resolves.not.toThrowError(NotFoundError);
+    });
+
+    it('should return thread details when thread is found', async () => {
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321', date: '2023-11-29T06:11:34.936Z' });
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      await expect(threadRepositoryPostgres.getThreadById('thread-321')).resolves.toStrictEqual({
+        id: expect.any(String),
+        title: 'Dicoding',
+        body: 'Dicoding is the best!',
+        date: expect.any(Date),
+        username: 'dicoding',
+      });
+    });
+  });
 });

@@ -119,4 +119,19 @@ describe('CommentRepositoryPostgres', () => {
       expect(result).toStrictEqual(true);
     });
   });
+
+  describe('getCommentsByThreadId function', () => {
+    it('should return all comments in the thread', async () => {
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-01' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-02' });
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      const result = await commentRepositoryPostgres.getCommentsByThreadId('thread-321');
+
+      expect(result).toHaveLength(2);
+    });
+  });
 });

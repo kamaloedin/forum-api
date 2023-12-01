@@ -13,7 +13,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     date: {
-      type: 'TIME',
+      type: 'TIMESTAMP WITH TIME ZONE',
       notNull: true,
     },
     content: {
@@ -26,11 +26,7 @@ exports.up = (pgm) => {
     },
   });
 
-  pgm.addConstraint(
-    'comments',
-    'fk_comments.owner_users.id',
-    'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE',
-  );
+  pgm.addConstraint('comments', 'fk_comments.owner_users.id', 'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE');
 };
 
 exports.down = (pgm) => {
