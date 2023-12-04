@@ -9,7 +9,7 @@ class DeleteCommentUseCase {
     await this._threadRepository.findThreadById(threadId);
     await this._commentRepository.findCommentById(commentId);
     await this._commentRepository.verifyCommentAccess(commentId, owner);
-    return this._commentRepository.deleteComment(commentId);
+    await this._commentRepository.deleteComment(commentId);
   }
 }
 

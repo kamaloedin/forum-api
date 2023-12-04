@@ -114,9 +114,7 @@ describe('CommentRepositoryPostgres', () => {
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
-      const result = await commentRepositoryPostgres.deleteComment('comment-123');
-
-      expect(result).toStrictEqual(true);
+      await commentRepositoryPostgres.deleteComment('comment-123');
     });
   });
 
