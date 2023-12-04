@@ -132,6 +132,15 @@ describe('CommentRepositoryPostgres', () => {
       const result = await commentRepositoryPostgres.getCommentsByThreadId('thread-321');
 
       expect(result).toHaveLength(2);
+      result.forEach((comment) => {
+        expect(comment).toStrictEqual({
+          id: expect.any(String),
+          username: expect.any(String),
+          date: expect.any(Date),
+          content: expect.any(String),
+          is_delete: expect.any(Boolean),
+        });
+      });
     });
   });
 });

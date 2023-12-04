@@ -16,7 +16,7 @@ describe('DeleteCommentUseCase', () => {
     mockThreadRepository.findThreadById = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.findCommentById = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.verifyCommentAccess = jest.fn().mockImplementation(() => Promise.resolve());
-    mockCommentRepository.deleteComment = jest.fn().mockImplementation(() => Promise.resolve());
+    mockCommentRepository.deleteComment = jest.fn().mockImplementation(() => Promise.resolve(true));
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,

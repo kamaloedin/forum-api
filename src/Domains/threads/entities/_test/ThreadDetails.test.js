@@ -5,7 +5,7 @@ describe('ThreadDetails entities', () => {
     const payload = {
       id: 'thread-321',
       body: 'a thread body',
-      date: expect.any(Date),
+      date: '2021-08-08T07:22:33.555Z',
       username: 'dicoding',
       comments: [
         {
@@ -16,8 +16,8 @@ describe('ThreadDetails entities', () => {
           isDelete: false,
         },
         {
-          id: 'comment-01',
-          username: 'john-01',
+          id: 'comment-02',
+          username: 'john-02',
           date: '2021-08-08T07:22:33.555Z',
           content: 'second comment',
           isDelete: true,
@@ -33,7 +33,7 @@ describe('ThreadDetails entities', () => {
       id: 'thread-321',
       title: [],
       body: 'a thread body',
-      date: expect.any(Date),
+      date: '2021-08-08T07:22:33.555Z',
       username: 'dicoding',
       comments: [
         {
@@ -44,8 +44,8 @@ describe('ThreadDetails entities', () => {
           isDelete: false,
         },
         {
-          id: 'comment-01',
-          username: 'john-01',
+          id: 'comment-02',
+          username: 'john-02',
           date: '2021-08-08T07:22:33.555Z',
           content: 'second comment',
           isDelete: true,

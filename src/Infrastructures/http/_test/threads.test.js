@@ -128,7 +128,7 @@ describe('/threads endpoint', () => {
       await UsersTableTestHelper.addUser({ id: 'user-123' });
       await ThreadTableTestHelper.addThread({ id: 'thread-321' });
       await CommentsTableTestHelper.addComment({ id: 'comment01' });
-      await CommentsTableTestHelper.addComment({ id: 'comment02' });
+      await CommentsTableTestHelper.addComment({ id: 'comment02', isDelete: true });
       const server = await createServer(container);
       const response = await server.inject({
         method: 'GET',

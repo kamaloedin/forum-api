@@ -21,12 +21,14 @@ describe('GetThreadDetailsUseCase', () => {
         username: 'john-01',
         date: expect.any(Date),
         content: 'first comment',
+        is_delete: false,
       },
       {
         id: 'comment-02',
         username: 'john-02',
         date: expect.any(Date),
         content: 'second comment',
+        is_delete: true,
       },
     ];
 
@@ -56,12 +58,14 @@ describe('GetThreadDetailsUseCase', () => {
             username: 'john-01',
             date: expect.any(Date),
             content: 'first comment',
+            is_delete: false,
           },
           {
             id: 'comment-02',
             username: 'john-02',
             date: expect.any(Date),
-            content: 'second comment',
+            content: '**komentar telah dihapus**',
+            is_delete: true,
           },
         ],
       }),

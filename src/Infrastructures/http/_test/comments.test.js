@@ -153,7 +153,7 @@ describe('/comments endpoint', () => {
     it('should response 403 when user does not have access to the comment', async () => {
       const accessToken = await ServerTestHelper.getAccessToken();
       await ThreadTableTestHelper.addThread({ id: 'thread-321' });
-      await UsersTableTestHelper.addUser({ id: 'kamal-098' });
+      await UsersTableTestHelper.addUser({ id: 'kamal-098', username: 'kamal' });
       await CommentsTableTestHelper.addComment({ id: 'comment-321', owner: 'kamal-098' });
       const server = await createServer(container);
 

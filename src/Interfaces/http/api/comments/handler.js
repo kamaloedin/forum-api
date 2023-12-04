@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
 const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
 
@@ -14,16 +15,12 @@ class CommentsHandler {
     const { threadId } = request.params;
     const { content } = request.payload;
     const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
-    const { id } = await addCommentUseCase.execute({ content, owner, threadId });
+    const addedComment = await addCommentUseCase.execute({ content, owner, threadId });
 
     const response = h.response({
       status: 'success',
       data: {
-        addedComment: {
-          id,
-          content,
-          owner,
-        },
+        addedComment,
       },
     });
     response.code(201);
@@ -34,7 +31,7 @@ class CommentsHandler {
     const { id: owner } = request.auth.credentials;
     const { threadId, commentId } = request.params;
     const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
-    await deleteCommentUseCase.execute({ threadId, commentId, owner });
+    const { isDelete } = await deleteCommentUseCase.execute({ threadId, commentId, owner });
 
     const response = h.response({
       status: 'success',

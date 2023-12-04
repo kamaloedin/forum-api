@@ -1,6 +1,5 @@
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
-const mapDBtoModel = require('../../Commons/utils');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
 const CreatedComment = require('../../Domains/comments/entities/CreatedComment');
 
@@ -63,14 +62,13 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentsByThreadId(id) {
     const query = {
-      text: 'select c.id, u.username, c.date, c.content, c.is_delete from comments c inner join users u on c.owner = u.id where c.thread_id = $1',
+      text: 'SELECT c.id, u.username, c.date, c.content, c.is_delete FROM comments c INNER JOIN users u on c.owner = u.id WHERE c.thread_id = $1 ORDER BY c.date ASC',
       values: [id],
     };
 
     const result = await this._pool.query(query);
-    // console.log(result.rows.map(mapDBtoModel));
 
-    return result.rows.map(mapDBtoModel);
+    return result.rows;
   }
 }
 
