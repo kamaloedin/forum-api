@@ -53,10 +53,6 @@ const createServer = async (container) => {
       plugin: comments,
       options: { container },
     },
-    // {
-    //   plugin: helloWorlds,
-    //   options: { container },
-    // },
   ]);
 
   server.ext('onPreResponse', (request, h) => {
