@@ -31,9 +31,6 @@ const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgre
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
 const GetThreadDetailsUseCase = require('../Applications/use_case/GetThreadDetailsUseCase');
-// const HelloWorldsRepository = require('../Domains/helloWorlds/HelloWorldsRepository');
-// const HelloWorldsRepositoryPostgres = require('./repository/HelloWorldsRepositoryPostgres');
-// const SayHelloUseCase = require('../Applications/use_case/SayHelloUseCase');
 
 // creating container
 const container = createContainer();
@@ -115,11 +112,6 @@ container.register([
       ],
     },
   },
-  // {
-  //   key: HelloWorldsRepository.name,
-  //   Class: HelloWorldsRepositoryPostgres,
-  //   parameter: {},
-  // },
 ]);
 
 // registering use cases
@@ -260,19 +252,6 @@ container.register([
       ],
     },
   },
-  // {
-  //   key: SayHelloUseCase.name,
-  //   Class: SayHelloUseCase,
-  //   parameter: {
-  //     injectType: 'destructuring',
-  //     dependencies: [
-  //       {
-  //         name: 'helloWorldsRepository',
-  //         internal: HelloWorldsRepository.name,
-  //       },
-  //     ],
-  //   },
-  // },
 ]);
 
 module.exports = container;
