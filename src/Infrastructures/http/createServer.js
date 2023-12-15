@@ -53,11 +53,15 @@ const createServer = async (container) => {
       plugin: comments,
       options: { container },
     },
-    // {
-    //   plugin: helloWorlds,
-    //   options: { container },
-    // },
   ]);
+
+  server.route({
+    method: 'GET',
+    path: '/',
+    handler: () => ({
+      value: 'Hello world!',
+    }),
+  });
 
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
