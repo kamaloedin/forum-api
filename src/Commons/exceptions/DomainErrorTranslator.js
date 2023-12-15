@@ -46,6 +46,12 @@ DomainErrorTranslator._directories = {
   'THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
     'tidak dapat membuat thread details baru karena tipe data tidak sesuai',
   ),
+  'HELLO_WORLDS.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+    'tidak dapat membuat hello worlds baru karena properti yang dibutuhkan tidak ada',
+  ),
+  'HELLO_WORLDS.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+    'tidak dapat membuat hello worlds baru karena tipe data tidak sesuai',
+  ),
 };
 
 module.exports = DomainErrorTranslator;

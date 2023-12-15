@@ -54,6 +54,12 @@ describe('DomainErrorTranslator', () => {
     expect(DomainErrorTranslator.translate(new Error('THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION'))).toStrictEqual(
       new InvariantError('tidak dapat membuat thread details baru karena tipe data tidak sesuai'),
     );
+    expect(DomainErrorTranslator.translate(new Error('HELLO_WORLDS.NOT_CONTAIN_NEEDED_PROPERTY'))).toStrictEqual(
+      new InvariantError('tidak dapat membuat hello worlds baru karena properti yang dibutuhkan tidak ada'),
+    );
+    expect(DomainErrorTranslator.translate(new Error('HELLO_WORLDS.NOT_MEET_DATA_TYPE_SPECIFICATION'))).toStrictEqual(
+      new InvariantError('tidak dapat membuat hello worlds baru karena tipe data tidak sesuai'),
+    );
   });
 
   it('should return original error when error message is not needed to translate', () => {
