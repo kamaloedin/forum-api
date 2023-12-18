@@ -1,6 +1,5 @@
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-const ThreadDetails = require('../../../Domains/threads/entities/ThreadDetails');
 const GetThreadDetailsUseCase = require('../GetThreadDetailsUseCase');
 
 describe('GetThreadDetailsUseCase', () => {
@@ -45,32 +44,28 @@ describe('GetThreadDetailsUseCase', () => {
 
     const threadDetails = await getThreadDetailsUseCase.execute(threadId);
 
-    expect(threadDetails).toStrictEqual(
-      new ThreadDetails({
-        id: 'thread-321',
-        title: 'a thread',
-        body: 'a thread body',
-        date: expect.any(Date),
-        username: 'dicoding',
-        comments: [
-          {
-            id: 'comment-01',
-            username: 'john-01',
-            date: expect.any(Date),
-            content: 'first comment',
-            is_delete: false,
-          },
-          {
-            id: 'comment-02',
-            username: 'john-02',
-            date: expect.any(Date),
-            content: '**komentar telah dihapus**',
-            is_delete: true,
-          },
-        ],
-      }),
-    );
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
+    expect(threadDetails).toStrictEqual({
+      id: 'thread-321',
+      title: 'a thread',
+      body: 'a thread body',
+      date: expect.any(Date),
+      username: 'dicoding',
+      comments: [
+        {
+          id: 'comment-01',
+          username: 'john-01',
+          date: expect.any(Date),
+          content: 'first comment',
+        },
+        {
+          id: 'comment-02',
+          username: 'john-02',
+          date: expect.any(Date),
+          content: '**komentar telah dihapus**',
+        },
+      ],
+    });
   });
 });

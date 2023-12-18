@@ -7,22 +7,6 @@ describe('ThreadDetails entities', () => {
       body: 'a thread body',
       date: '2021-08-08T07:22:33.555Z',
       username: 'dicoding',
-      comments: [
-        {
-          id: 'comment-01',
-          username: 'john-01',
-          date: '2021-08-08T07:22:33.555Z',
-          content: 'first comment',
-          isDelete: false,
-        },
-        {
-          id: 'comment-02',
-          username: 'john-02',
-          date: '2021-08-08T07:22:33.555Z',
-          content: 'second comment',
-          isDelete: true,
-        },
-      ],
     };
 
     expect(() => new ThreadDetails(payload)).toThrowError('THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
@@ -35,22 +19,6 @@ describe('ThreadDetails entities', () => {
       body: 'a thread body',
       date: '2021-08-08T07:22:33.555Z',
       username: 'dicoding',
-      comments: [
-        {
-          id: 'comment-01',
-          username: 'john-01',
-          date: '2021-08-08T07:22:33.555Z',
-          content: 'first comment',
-          isDelete: false,
-        },
-        {
-          id: 'comment-02',
-          username: 'john-02',
-          date: '2021-08-08T07:22:33.555Z',
-          content: 'second comment',
-          isDelete: true,
-        },
-      ],
     };
 
     expect(() => new ThreadDetails(payload)).toThrowError('THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
@@ -63,38 +31,7 @@ describe('ThreadDetails entities', () => {
       body: 'a thread body',
       date: expect.any(Date),
       username: 'dicoding',
-      comments: [
-        {
-          id: 'comment-01',
-          username: 'john-01',
-          date: expect.any(Date),
-          content: 'first comment',
-          isDelete: false,
-        },
-        {
-          id: 'comment-02',
-          username: 'john-02',
-          date: expect.any(Date),
-          content: 'second comment',
-          isDelete: true,
-        },
-      ],
     };
-
-    const mockFilteredComments = [
-      {
-        id: 'comment-01',
-        username: 'john-01',
-        date: expect.any(Date),
-        content: 'first comment',
-      },
-      {
-        id: 'comment-02',
-        username: 'john-02',
-        date: expect.any(Date),
-        content: '**komentar telah dihapus**',
-      },
-    ];
 
     const threadDetails = new ThreadDetails(payload);
 
@@ -103,6 +40,5 @@ describe('ThreadDetails entities', () => {
     expect(threadDetails.body).toEqual(payload.body);
     expect(threadDetails.date).toEqual(payload.date);
     expect(threadDetails.username).toEqual(payload.username);
-    expect(threadDetails.comments).toEqual(mockFilteredComments);
   });
 });

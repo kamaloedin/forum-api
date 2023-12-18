@@ -3,29 +3,17 @@
 class ThreadDetails {
   constructor(payload) {
     this._verifyPayload(payload);
-    const { id, title, body, date, username, comments } = payload;
+    const { id, title, body, date, username } = payload;
 
     this.id = id;
     this.title = title;
     this.body = body;
     this.date = date;
     this.username = username;
-    this.comments = comments.map((obj) => {
-      const newObj = {
-        id: obj.id,
-        username: obj.username,
-        date: obj.date,
-        content: obj.content,
-      };
-      if (obj.isDelete) {
-        newObj.content = '**komentar telah dihapus**';
-      }
-      return newObj;
-    });
   }
 
-  _verifyPayload({ id, title, body, date, username, comments }) {
-    if (!id || !title || !body || !date || !username || !comments) {
+  _verifyPayload({ id, title, body, date, username }) {
+    if (!id || !title || !body || !date || !username) {
       throw new Error('THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -34,8 +22,7 @@ class ThreadDetails {
       typeof title !== 'string' ||
       typeof body !== 'string' ||
       typeof date !== 'object' ||
-      typeof username !== 'string' ||
-      typeof comments !== 'object'
+      typeof username !== 'string'
     ) {
       throw new Error('THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
