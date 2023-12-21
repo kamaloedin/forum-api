@@ -1,86 +1,86 @@
-const CommentDetails = require('../CommentDetails');
+const ReplyDetails = require('../ReplyDetails');
 
-describe('CommentDetails entities', () => {
+describe('ReplyDetails entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     const payload = [
       {
-        id: 'comment-01',
+        id: 'reply-01',
         date: expect.any(Date),
-        content: 'first comment',
+        content: 'first reply',
         isDelete: false,
       },
       {
-        id: 'comment-02',
+        id: 'reply-02',
         username: 'john-02',
         date: expect.any(Date),
-        content: 'second comment',
+        content: 'second reply',
         isDelete: true,
       },
     ];
 
-    expect(() => new CommentDetails(payload)).toThrowError(
-      'COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
+    expect(() => new ReplyDetails(payload)).toThrowError(
+      'REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
     );
   });
 
   it('should throw error when payload did not meet data type specification', () => {
     const payload = [
       {
-        id: 'comment-01',
+        id: 'reply-01',
         username: [],
         date: expect.any(Date),
-        content: 'first comment',
+        content: 'first reply',
         isDelete: false,
       },
       {
-        id: 'comment-02',
+        id: 'reply-02',
         username: 'john-02',
         date: expect.any(Date),
-        content: 'second comment',
+        content: 'second reply',
         isDelete: true,
       },
     ];
 
-    expect(() => new CommentDetails(payload)).toThrowError(
-      'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
+    expect(() => new ReplyDetails(payload)).toThrowError(
+      'REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
     );
   });
 
-  it('should create CommentDetails object correctly', () => {
+  it('should create ReplyDetails object correctly', () => {
     const payload = [
       {
-        id: 'comment-01',
+        id: 'reply-01',
         username: 'john-01',
         date: expect.any(Date),
-        content: 'first comment',
+        content: 'first reply',
         isDelete: false,
       },
       {
-        id: 'comment-02',
+        id: 'reply-02',
         username: 'john-02',
         date: expect.any(Date),
-        content: 'second comment',
+        content: 'second reply',
         isDelete: true,
       },
     ];
 
-    const mappedComments = [
+    const mappedReplies = [
       {
-        id: 'comment-01',
+        id: 'reply-01',
         username: 'john-01',
         date: expect.any(Date),
-        content: 'first comment',
+        content: 'first reply',
       },
       {
-        id: 'comment-02',
+        id: 'reply-02',
         username: 'john-02',
         date: expect.any(Date),
-        content: '**komentar telah dihapus**',
+        content: '**balasan telah dihapus**',
       },
     ];
 
-    const { comments } = new CommentDetails(payload);
+    const { replies } = new ReplyDetails(payload);
 
-    expect(comments).toEqual(mappedComments);
+    expect(replies).toEqual(mappedReplies);
   });
 });

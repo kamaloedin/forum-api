@@ -2,15 +2,15 @@
 /* eslint-disable object-curly-newline */
 class CommentDetails {
   constructor(payload) {
-    this.comments = payload.map((Comment) => {
-      this._verifyPayload(Comment);
+    this.comments = payload.map((comment) => {
+      this._verifyPayload(comment);
       const newComment = {
-        id: Comment.id,
-        username: Comment.username,
-        date: Comment.date,
-        content: Comment.content,
+        id: comment.id,
+        username: comment.username,
+        date: comment.date,
+        content: comment.content,
       };
-      if (Comment.isDelete) {
+      if (comment.isDelete) {
         newComment.content = '**komentar telah dihapus**';
       }
       return newComment;
