@@ -1,14 +1,28 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable object-curly-newline */
 class CommentDetails {
-  constructor(payload) {
+  constructor(payload, replyDetails) {
     this.comments = payload.map((comment) => {
       this._verifyPayload(comment);
+      const filteredReplies = replyDetails.filter(
+        (reply) => reply.commentId === comment.id,
+      );
+      const replies = filteredReplies.map((reply) => {
+        const newReply = {
+          id: reply.id,
+          username: reply.username,
+          date: reply.date,
+          content: reply.content,
+        };
+
+        return newReply;
+      });
       const newComment = {
         id: comment.id,
         username: comment.username,
         date: comment.date,
         content: comment.content,
+        replies,
       };
       if (comment.isDelete) {
         newComment.content = '**komentar telah dihapus**';

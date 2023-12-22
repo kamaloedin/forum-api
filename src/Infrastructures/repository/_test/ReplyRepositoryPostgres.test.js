@@ -74,7 +74,7 @@ describe('ReplyRepositoryPostgres', () => {
     });
   });
 
-  describe('getRepliesByCommentId function', () => {
+  describe('getRepliesByThreadId function', () => {
     it('should return all replies in the comment', async () => {
       await UsersTableTestHelper.addUser({ id: 'user-123' });
       await ThreadTableTestHelper.addThread({ id: 'thread-321' });
@@ -84,20 +84,28 @@ describe('ReplyRepositoryPostgres', () => {
 
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
-      const result = await replyRepositoryPostgres.getRepliesByCommentId(
-        'comment-321',
+      const result = await replyRepositoryPostgres.getRepliesByThreadId(
+        'thread-321',
       );
 
-      expect(result).toHaveLength(2);
-      result.forEach((reply) => {
-        expect(reply).toStrictEqual({
+      expect(result).toStrictEqual([
+        {
           id: expect.any(String),
           username: expect.any(String),
           date: expect.any(Date),
           content: expect.any(String),
           is_delete: expect.any(Boolean),
-        });
-      });
+          comment_id: expect.any(String),
+        },
+        {
+          id: expect.any(String),
+          username: expect.any(String),
+          date: expect.any(Date),
+          content: expect.any(String),
+          is_delete: expect.any(Boolean),
+          comment_id: expect.any(String),
+        },
+      ]);
     });
   });
 });

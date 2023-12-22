@@ -1,34 +1,35 @@
-const mapDBtoModel = require('../../Commons/utils');
+const { mapDBToModel, mapDBReplyToModel } = require('../../Commons/utils');
 const ThreadDetails = require('../../Domains/threads/entities/ThreadDetails');
 const CommentDetails = require('../../Domains/comments/entities/CommentDetails');
-// const ReplyDetails = require('../../Domains/replies/entities/ReplyDetails');
+const ReplyDetails = require('../../Domains/replies/entities/ReplyDetails');
 
 class GetThreadDetailsUseCase {
-  constructor({ threadRepository, commentRepository }) {
+  constructor({ threadRepository, commentRepository, replyRepository }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
+    this._replyRepository = replyRepository;
   }
 
   async execute(threadId) {
+    // Ambil thread, comments dan replies dari database
     const thread = await this._threadRepository.getThreadById(threadId);
     const rawComments = await this._commentRepository.getCommentsByThreadId(
       threadId,
     );
-    const mappedComments = rawComments.map(mapDBtoModel);
-    // const commmentWithReplies = mappedComments.map(async (comment) => {
-    //   const rawReplies = await this._replyRepository.getRepliesByCommentId(
-    //     comment.id,
-    //   );
-    //   const mappedReplies = rawReplies.map(mapDBtoModel);
-    //   const replies = new ReplyDetails(mappedReplies);
-    //   return {
-    //     ...comment,
-    //     replies,
-    //   };
-    // });
-    const threadDetails = new ThreadDetails({ ...thread });
-    const comments = new CommentDetails(mappedComments);
-    const fullDetails = { ...threadDetails, ...comments };
+    const rawReplies = await this._replyRepository.getRepliesByThreadId(
+      threadId,
+    );
+
+    // Map comments dan replies biar jadi camelCase
+    const mappedReplies = rawReplies.map(mapDBReplyToModel);
+    const mappedComments = rawComments.map(mapDBToModel);
+
+    // Buat masing-masing entitas dan rangkai semua data
+    const replyDetails = new ReplyDetails(mappedReplies); // verifikasi dan buang isDelete
+    const { replies } = replyDetails;
+    const comments = new CommentDetails(mappedComments, replies); // Masukkan reply ke comments dan verifikasi
+    const threadDetails = new ThreadDetails({ ...thread }); // Buat Thread
+    const fullDetails = { ...threadDetails, ...comments }; // Gabungkan thread dengan reply
     return fullDetails;
   }
 }

@@ -18,7 +18,24 @@ describe('CommentDetails entities', () => {
       },
     ];
 
-    expect(() => new CommentDetails(payload)).toThrowError(
+    const mockReplies = [
+      {
+        id: 'reply-01',
+        username: 'john-01',
+        date: expect.any(Date),
+        content: 'first reply',
+        commentId: 'comment-01',
+      },
+      {
+        id: 'reply-02',
+        username: 'john-02',
+        date: expect.any(Date),
+        content: '**balasan telah dihapus**',
+        commentId: 'comment-02',
+      },
+    ];
+
+    expect(() => new CommentDetails(payload, mockReplies)).toThrowError(
       'COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
     );
   });
@@ -41,7 +58,24 @@ describe('CommentDetails entities', () => {
       },
     ];
 
-    expect(() => new CommentDetails(payload)).toThrowError(
+    const mockReplies = [
+      {
+        id: 'reply-01',
+        username: 'john-01',
+        date: expect.any(Date),
+        content: 'first reply',
+        commentId: 'comment-01',
+      },
+      {
+        id: 'reply-02',
+        username: 'john-02',
+        date: expect.any(Date),
+        content: '**balasan telah dihapus**',
+        commentId: 'comment-02',
+      },
+    ];
+
+    expect(() => new CommentDetails(payload, mockReplies)).toThrowError(
       'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
     );
   });
@@ -64,22 +98,55 @@ describe('CommentDetails entities', () => {
       },
     ];
 
+    const mockReplies = [
+      {
+        id: 'reply-01',
+        username: 'john-01',
+        date: expect.any(Date),
+        content: 'first reply',
+        commentId: 'comment-01',
+      },
+      {
+        id: 'reply-02',
+        username: 'john-02',
+        date: expect.any(Date),
+        content: '**balasan telah dihapus**',
+        commentId: 'comment-02',
+      },
+    ];
+
     const mappedComments = [
       {
         id: 'comment-01',
         username: 'john-01',
         date: expect.any(Date),
         content: 'first comment',
+        replies: [
+          {
+            id: 'reply-01',
+            username: 'john-01',
+            date: expect.any(Date),
+            content: 'first reply',
+          },
+        ],
       },
       {
         id: 'comment-02',
         username: 'john-02',
         date: expect.any(Date),
         content: '**komentar telah dihapus**',
+        replies: [
+          {
+            id: 'reply-02',
+            username: 'john-02',
+            date: expect.any(Date),
+            content: '**balasan telah dihapus**',
+          },
+        ],
       },
     ];
 
-    const { comments } = new CommentDetails(payload);
+    const { comments } = new CommentDetails(payload, mockReplies);
 
     expect(comments).toEqual(mappedComments);
   });

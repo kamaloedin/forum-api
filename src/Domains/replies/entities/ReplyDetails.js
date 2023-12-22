@@ -7,6 +7,7 @@ class ReplyDetails {
         content: reply.content,
         date: reply.date,
         username: reply.username,
+        commentId: reply.commentId,
       };
       if (reply.isDelete) {
         newReply.content = '**balasan telah dihapus**';
@@ -16,9 +17,16 @@ class ReplyDetails {
   }
 
   _verifyPayload({
-    id, username, date, content, isDelete,
+    id, username, date, content, isDelete, commentId,
   }) {
-    if (!id || !username || !date || !content || isDelete === undefined) {
+    if (
+      !id
+      || !username
+      || !date
+      || !content
+      || isDelete === undefined
+      || !commentId
+    ) {
       throw new Error('REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -28,6 +36,7 @@ class ReplyDetails {
       || typeof date !== 'object'
       || typeof content !== 'string'
       || typeof isDelete !== 'boolean'
+      || typeof commentId !== 'string'
     ) {
       throw new Error('REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }

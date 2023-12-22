@@ -8,6 +8,7 @@ describe('ReplyDetails entities', () => {
         date: expect.any(Date),
         content: 'first reply',
         isDelete: false,
+        commentId: 'comment-01',
       },
       {
         id: 'reply-02',
@@ -15,6 +16,7 @@ describe('ReplyDetails entities', () => {
         date: expect.any(Date),
         content: 'second reply',
         isDelete: true,
+        commentId: 'comment-02',
       },
     ];
 
@@ -31,6 +33,7 @@ describe('ReplyDetails entities', () => {
         date: expect.any(Date),
         content: 'first reply',
         isDelete: false,
+        commentId: 'comment-01',
       },
       {
         id: 'reply-02',
@@ -38,6 +41,7 @@ describe('ReplyDetails entities', () => {
         date: expect.any(Date),
         content: 'second reply',
         isDelete: true,
+        commentId: 'comment-02',
       },
     ];
 
@@ -54,6 +58,7 @@ describe('ReplyDetails entities', () => {
         date: expect.any(Date),
         content: 'first reply',
         isDelete: false,
+        commentId: 'comment-01',
       },
       {
         id: 'reply-02',
@@ -61,6 +66,7 @@ describe('ReplyDetails entities', () => {
         date: expect.any(Date),
         content: 'second reply',
         isDelete: true,
+        commentId: 'comment-02',
       },
     ];
 
@@ -70,12 +76,14 @@ describe('ReplyDetails entities', () => {
         username: 'john-01',
         date: expect.any(Date),
         content: 'first reply',
+        commentId: 'comment-01',
       },
       {
         id: 'reply-02',
         username: 'john-02',
         date: expect.any(Date),
         content: '**balasan telah dihapus**',
+        commentId: 'comment-02',
       },
     ];
 
