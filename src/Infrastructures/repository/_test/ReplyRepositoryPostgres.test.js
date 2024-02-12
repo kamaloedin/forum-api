@@ -2,6 +2,8 @@ const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelp
 const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const CreateReply = require('../../../Domains/replies/entities/CreateReply');
 const CreatedReply = require('../../../Domains/replies/entities/CreatedReply');
 
@@ -106,6 +108,82 @@ describe('ReplyRepositoryPostgres', () => {
           comment_id: expect.any(String),
         },
       ]);
+    });
+  });
+
+  describe('findReplyById function', () => {
+    it('should throw NotFoundError when the reply is not found', async () => {
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      await expect(
+        replyRepositoryPostgres.findReplyById('reply-01'),
+      ).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw NotFoundError when the reply is found', async () => {
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-321' });
+      await RepliesTableTestHelper.addReply({ id: 'reply-321' });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      await expect(
+        replyRepositoryPostgres.findReplyById('reply-321'),
+      ).resolves.not.toThrowError(NotFoundError);
+    });
+  });
+
+  describe('verifyReplyAccess function', () => {
+    it('should throw Authorization error if user does not match the owner of the reply', async () => {
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'dicoding',
+      });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-321' });
+      await RepliesTableTestHelper.addReply({ id: 'reply-321' });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      await expect(
+        replyRepositoryPostgres.verifyReplyAccess('reply-321', 'kamal-321'),
+      ).rejects.toThrowError(AuthorizationError);
+    });
+
+    it('should not throw Authorization error if user does match the owner of the comment', async () => {
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'dicoding',
+      });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-321' });
+      await RepliesTableTestHelper.addReply({ id: 'reply-321' });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      await expect(
+        replyRepositoryPostgres.verifyReplyAccess('reply-321', 'user-123'),
+      ).resolves.not.toThrowError(AuthorizationError);
+    });
+  });
+
+  describe('deleteReply function', () => {
+    it('should change the is_delete attribute of the reply', async () => {
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'dicoding',
+      });
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-321' });
+      await RepliesTableTestHelper.addReply({ id: 'reply-01' });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      await replyRepositoryPostgres.deleteReply('reply-01');
+
+      const result = await RepliesTableTestHelper.checkIsDelete('reply-01');
+      expect(result.is_delete).toEqual(true);
     });
   });
 });

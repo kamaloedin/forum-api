@@ -5,7 +5,7 @@ const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const RepliesTableTestHelper = {
   async addReply({
-    id = 'reply-123',
+    id = 'reply-321',
     owner = 'user-123',
     content = 'this is a reply!',
     threadId = 'thread-321',
@@ -29,6 +29,17 @@ const RepliesTableTestHelper = {
 
     const result = await pool.query(query);
     return result.rows;
+  },
+
+  async checkIsDelete(id) {
+    const query = {
+      text: 'SELECT is_delete FROM  replies WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await pool.query(query);
+
+    return result.rows[0];
   },
 
   async cleanTable() {
