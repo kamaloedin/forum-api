@@ -8,6 +8,7 @@ describe('CommentDetails entities', () => {
         date: expect.any(Date),
         content: 'first comment',
         isDelete: false,
+        likeCount: 1,
       },
       {
         id: 'comment-02',
@@ -15,6 +16,7 @@ describe('CommentDetails entities', () => {
         date: expect.any(Date),
         content: 'second comment',
         isDelete: true,
+        likeCount: 0,
       },
     ];
 
@@ -35,9 +37,7 @@ describe('CommentDetails entities', () => {
       },
     ];
 
-    expect(() => new CommentDetails(payload, mockReplies)).toThrowError(
-      'COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
-    );
+    expect(() => new CommentDetails(payload, mockReplies)).toThrowError('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
   it('should throw error when payload did not meet data type specification', () => {
@@ -48,6 +48,7 @@ describe('CommentDetails entities', () => {
         date: expect.any(Date),
         content: 'first comment',
         isDelete: false,
+        likeCount: 1,
       },
       {
         id: 'comment-02',
@@ -55,6 +56,7 @@ describe('CommentDetails entities', () => {
         date: expect.any(Date),
         content: 'second comment',
         isDelete: true,
+        likeCount: 0,
       },
     ];
 
@@ -75,9 +77,7 @@ describe('CommentDetails entities', () => {
       },
     ];
 
-    expect(() => new CommentDetails(payload, mockReplies)).toThrowError(
-      'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
-    );
+    expect(() => new CommentDetails(payload, mockReplies)).toThrowError('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should create CommentDetails object correctly', () => {
@@ -88,6 +88,7 @@ describe('CommentDetails entities', () => {
         date: expect.any(Date),
         content: 'first comment',
         isDelete: false,
+        likeCount: 1,
       },
       {
         id: 'comment-02',
@@ -95,6 +96,7 @@ describe('CommentDetails entities', () => {
         date: expect.any(Date),
         content: 'second comment',
         isDelete: true,
+        likeCount: 0,
       },
     ];
 
@@ -121,6 +123,7 @@ describe('CommentDetails entities', () => {
         username: 'john-01',
         date: expect.any(Date),
         content: 'first comment',
+        likeCount: 1,
         replies: [
           {
             id: 'reply-01',
@@ -135,6 +138,7 @@ describe('CommentDetails entities', () => {
         username: 'john-02',
         date: expect.any(Date),
         content: '**komentar telah dihapus**',
+        likeCount: 0,
         replies: [
           {
             id: 'reply-02',

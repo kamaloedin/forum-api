@@ -4,9 +4,7 @@ class CommentDetails {
   constructor(payload, replyDetails) {
     this.comments = payload.map((comment) => {
       this._verifyPayload(comment);
-      const filteredReplies = replyDetails.filter(
-        (reply) => reply.commentId === comment.id,
-      );
+      const filteredReplies = replyDetails.filter((reply) => reply.commentId === comment.id);
       const replies = filteredReplies.map((reply) => {
         const newReply = {
           id: reply.id,
@@ -22,6 +20,7 @@ class CommentDetails {
         username: comment.username,
         date: comment.date,
         content: comment.content,
+        likeCount: comment.likeCount,
         replies,
       };
       if (comment.isDelete) {
@@ -31,8 +30,8 @@ class CommentDetails {
     });
   }
 
-  _verifyPayload({ id, username, date, content, isDelete }) {
-    if (!id || !username || !date || !content || isDelete === undefined) {
+  _verifyPayload({ id, username, date, content, isDelete, likeCount }) {
+    if (!id || !username || !date || !content || isDelete === undefined || likeCount === null || likeCount === undefined) {
       throw new Error('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -41,7 +40,8 @@ class CommentDetails {
       typeof username !== 'string' ||
       typeof date !== 'object' ||
       typeof content !== 'string' ||
-      typeof isDelete !== 'boolean'
+      typeof isDelete !== 'boolean' ||
+      typeof likeCount !== 'number'
     ) {
       throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }

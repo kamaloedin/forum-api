@@ -22,6 +22,7 @@ describe('GetThreadDetailsUseCase', () => {
         date: expect.any(Date),
         content: 'first comment',
         is_delete: false,
+        like_count: 1,
       },
       {
         id: 'comment-02',
@@ -29,6 +30,7 @@ describe('GetThreadDetailsUseCase', () => {
         date: expect.any(Date),
         content: 'second comment',
         is_delete: true,
+        like_count: 0,
       },
     ];
 
@@ -55,15 +57,9 @@ describe('GetThreadDetailsUseCase', () => {
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
 
-    mockThreadRepository.getThreadById = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(mockThread));
-    mockCommentRepository.getCommentsByThreadId = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(mockComments));
-    mockReplyRepository.getRepliesByThreadId = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(mockReplies));
+    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() => Promise.resolve(mockThread));
+    mockCommentRepository.getCommentsByThreadId = jest.fn().mockImplementation(() => Promise.resolve(mockComments));
+    mockReplyRepository.getRepliesByThreadId = jest.fn().mockImplementation(() => Promise.resolve(mockReplies));
 
     const getThreadDetailsUseCase = new GetThreadDetailsUseCase({
       threadRepository: mockThreadRepository,
@@ -74,9 +70,7 @@ describe('GetThreadDetailsUseCase', () => {
     const threadDetails = await getThreadDetailsUseCase.execute(threadId);
 
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
-    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(
-      threadId,
-    );
+    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(threadId);
     expect(threadDetails).toStrictEqual({
       id: 'thread-321',
@@ -90,6 +84,7 @@ describe('GetThreadDetailsUseCase', () => {
           username: 'john-01',
           date: expect.any(Date),
           content: 'first comment',
+          likeCount: 1,
           replies: [
             {
               id: 'reply-01',
@@ -104,6 +99,7 @@ describe('GetThreadDetailsUseCase', () => {
           username: 'john-02',
           date: expect.any(Date),
           content: '**komentar telah dihapus**',
+          likeCount: 0,
           replies: [
             {
               id: 'reply-02',

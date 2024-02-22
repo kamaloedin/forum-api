@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
 const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
+const ToggleCommentLikeUseCase = require('../../../../Applications/use_case/ToggleCommentLikeUseCase');
 
 class CommentsHandler {
   constructor(container) {
@@ -8,6 +9,7 @@ class CommentsHandler {
 
     this.postCommentHandler = this.postCommentHandler.bind(this);
     this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
+    this.toggleCommentLikeHandler = this.toggleCommentLikeHandler.bind(this);
   }
 
   async postCommentHandler(request, h) {
@@ -32,6 +34,19 @@ class CommentsHandler {
     const { threadId, commentId } = request.params;
     const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
     await deleteCommentUseCase.execute({ threadId, commentId, owner });
+
+    const response = h.response({
+      status: 'success',
+    });
+    response.code(200);
+    return response;
+  }
+
+  async toggleCommentLikeHandler(request, h) {
+    const { id: userId } = request.auth.credentials;
+    const { commentId, threadId } = request.params;
+    const toggleCommentLikeUseCase = this._container.getInstance(ToggleCommentLikeUseCase.name);
+    await toggleCommentLikeUseCase.execute({ commentId, userId, threadId });
 
     const response = h.response({
       status: 'success',

@@ -29,6 +29,18 @@ const CommentsTableTestHelper = {
     const result = await pool.query(query);
     return result.rows;
   },
+
+  async getLikeCount(id) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await pool.query(query);
+
+    return result.rows[0].like_count;
+  },
+
   async cleanTable() {
     await pool.query('TRUNCATE TABLE comments CASCADE');
   },

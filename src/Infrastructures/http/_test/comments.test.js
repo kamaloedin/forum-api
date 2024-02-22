@@ -1,3 +1,4 @@
+const CommentLikeTableTestHelper = require('../../../../tests/CommentLikeTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper');
@@ -86,9 +87,7 @@ describe('/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada',
-      );
+      expect(responseJson.message).toEqual('tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada');
     });
 
     it('should response 400 when request payload did not meet data type specification', async () => {
@@ -112,9 +111,7 @@ describe('/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'tidak dapat membuat comment baru karena tipe data tidak sesuai',
-      );
+      expect(responseJson.message).toEqual('tidak dapat membuat comment baru karena tipe data tidak sesuai');
     });
   });
 
@@ -182,9 +179,7 @@ describe('/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'User tidak dapat mengakses komentar',
-      );
+      expect(responseJson.message).toEqual('User tidak dapat mengakses komentar');
     });
 
     it('should response 200 and return success status', async () => {
@@ -204,6 +199,67 @@ describe('/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
+    });
+  });
+  describe('when PUT /likes', () => {
+    it('should response 200 and return success status when comment like added', async () => {
+      const accessToken = await ServerTestHelper.getAccessToken();
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123' });
+      await CommentLikeTableTestHelper.addCommentLike({ id: 'comment_like-123' });
+      const server = await createServer(container);
+
+      const response = await server.inject({
+        method: 'PUT',
+        url: '/threads/thread-321/comments/comment-123/likes',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+    it('should response 404 when thread could not be found', async () => {
+      const accessToken = await ServerTestHelper.getAccessToken();
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123' });
+      await CommentLikeTableTestHelper.addCommentLike({ id: 'comment_like-123' });
+      const server = await createServer(container);
+
+      const response = await server.inject({
+        method: 'PUT',
+        url: '/threads/thread-999/comments/comment-123/likes',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('Thread tidak bisa ditemukan');
+    });
+    it('should response 404 when comment could not be found', async () => {
+      const accessToken = await ServerTestHelper.getAccessToken();
+      await ThreadTableTestHelper.addThread({ id: 'thread-321' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123' });
+      await CommentLikeTableTestHelper.addCommentLike({ id: 'comment_like-123' });
+      const server = await createServer(container);
+
+      const response = await server.inject({
+        method: 'PUT',
+        url: '/threads/thread-321/comments/comment-999/likes',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('Komentar tidak bisa ditemukan');
     });
   });
 });

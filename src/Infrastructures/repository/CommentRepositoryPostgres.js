@@ -60,13 +60,59 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentsByThreadId(id) {
     const query = {
-      text: 'SELECT c.id, u.username, c.date, c.content, c.is_delete FROM comments c INNER JOIN users u on c.owner = u.id WHERE c.thread_id = $1 ORDER BY c.date ASC',
+      text: 'SELECT c.id, u.username, c.date, c.content, c.is_delete, c.like_count FROM comments c INNER JOIN users u on c.owner = u.id WHERE c.thread_id = $1 ORDER BY c.date ASC',
       values: [id],
     };
 
     const result = await this._pool.query(query);
 
     return result.rows;
+  }
+
+  async findCommentLike({ userId, commentId }) {
+    const query = {
+      text: 'SELECT id FROM comment_likes WHERE user_id = $1 AND comment_id = $2',
+      values: [userId, commentId],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
+  }
+
+  async addCommentLike({ userId, commentId }) {
+    const id = `comment_likes-${this._idGenerator()}`;
+    const query = {
+      text: 'INSERT INTO comment_likes VALUES($1, $2, $3)',
+      values: [id, userId, commentId],
+    };
+
+    await this._pool.query(query);
+  }
+
+  async deleteCommentLike({ userId, commentId }) {
+    const query = {
+      text: 'DELETE FROM comment_likes WHERE user_id = $1 AND comment_id = $2',
+      values: [userId, commentId],
+    };
+
+    await this._pool.query(query);
+  }
+
+  async updateLikeCount(commentId, isAdded) {
+    if (isAdded) {
+      const query = {
+        text: 'UPDATE comments SET like_count = like_count - 1 WHERE id = $1',
+        values: [commentId],
+      };
+      await this._pool.query(query);
+    } else {
+      const query = {
+        text: 'UPDATE comments SET like_count = like_count + 1 WHERE id = $1',
+        values: [commentId],
+      };
+      await this._pool.query(query);
+    }
   }
 }
 
